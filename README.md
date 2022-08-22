@@ -1,6 +1,6 @@
 #### Movie App Demo Description
 This project was done with Go, Gorm, Mysql, Gin.
-I uploaded enviroment file(.env). You can set database settings.
+I uploaded enviroment file(.env). You can set database settings. API uses 5000 port.
 #### Swagger URL 
 http://localhost:5000/swagger/docs/index.html
 
