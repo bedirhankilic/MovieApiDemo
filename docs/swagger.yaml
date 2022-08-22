@@ -1,0 +1,246 @@
+basePath: /
+definitions:
+  models.Movie:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      isdeleted:
+        type: boolean
+      name:
+        type: string
+      type:
+        type: string
+    type: object
+  requestmodels.AddMovie:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+    type: object
+  requestmodels.LoginModel:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  requestmodels.UpdateMovie:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      type:
+        type: string
+    type: object
+  responsemodels.GenericResponse:
+    properties:
+      StatusCode:
+        type: integer
+    type: object
+  responsemodels.MoviesListItem:
+    properties:
+      Data:
+        $ref: '#/definitions/responsemodels.PaginationModel'
+      StatusCode:
+        type: integer
+    type: object
+  responsemodels.PaginationModel:
+    properties:
+      Limit:
+        type: integer
+      Page:
+        type: integer
+      Rows:
+        items:
+          $ref: '#/definitions/models.Movie'
+        type: array
+      TotalPages:
+        type: integer
+    type: object
+  responsemodels.TokenResponse:
+    properties:
+      Data:
+        type: string
+      StatusCode:
+        type: integer
+    type: object
+host: localhost:5000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a movie api.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Movie API Swagger
+  version: "1.0"
+paths:
+  /AddMovie/:
+    put:
+      consumes:
+      - application/json
+      description: This method addes a new movie record
+      parameters:
+      - description: requestmodels.AddMovie Add Movie Item
+        in: body
+        name: addMovie
+        required: true
+        schema:
+          $ref: '#/definitions/requestmodels.AddMovie'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responsemodels.GenericResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responsemodels.GenericResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/responsemodels.GenericResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add Movie EP
+      tags:
+      - movie
+  /DeleteMovie/{movieId}:
+    post:
+      consumes:
+      - application/json
+      description: This method deletes a movie
+      parameters:
+      - description: movie id must be integer
+        in: path
+        name: movieId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responsemodels.GenericResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responsemodels.GenericResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/responsemodels.GenericResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete movie
+      tags:
+      - movie
+  /GetAllMovies/:
+    get:
+      consumes:
+      - application/json
+      description: This EP supports pagination (GetAllMovies?page=2&limit=3)
+      parameters:
+      - description: page number
+        in: query
+        name: page
+        type: integer
+      - description: limit count
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responsemodels.MoviesListItem'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responsemodels.GenericResponse'
+      summary: Get all movies list
+      tags:
+      - movie
+  /Login/:
+    post:
+      consumes:
+      - application/json
+      description: This required for login
+      parameters:
+      - description: requestmodels.LoginModel Login item
+        in: body
+        name: loginModel
+        required: true
+        schema:
+          $ref: '#/definitions/requestmodels.LoginModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responsemodels.TokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responsemodels.GenericResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/responsemodels.GenericResponse'
+      summary: This required for login
+      tags:
+      - login
+  /UpdateMovie/:
+    put:
+      consumes:
+      - application/json
+      description: This method update a movie record
+      parameters:
+      - description: requestmodels.UpdateMovie Updae Movie Item
+        in: body
+        name: updateMovie
+        required: true
+        schema:
+          $ref: '#/definitions/requestmodels.UpdateMovie'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responsemodels.GenericResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responsemodels.GenericResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/responsemodels.GenericResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Movie EP
+      tags:
+      - movie
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
